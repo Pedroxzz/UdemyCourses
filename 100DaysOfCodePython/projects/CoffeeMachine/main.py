@@ -26,21 +26,21 @@ MENU = {
 
 resources = {
     "water": 300,
-    "milk": 200,
+    "milk": 0,
     "coffee": 100,
 }
 
 
-def report():
+def report(money):
     print(f"Water: {resources['water']}ml")
     print(f"Milk: {resources['milk']}ml")
     print(f"Coffee: {resources['coffee']}g")
-    print(f"Money: $")
+    print(f"Money: ${money}")
 
 
-def check_resources(type):
+def check_resources(order, money):
     resources_sufficient = True
-    ingredients = MENU[type]["ingredients"]
+    ingredients = MENU[order]["ingredients"]
 
     if 'water' in ingredients:
         qtd_water = ingredients["water"]
@@ -55,29 +55,35 @@ def check_resources(type):
     else:
         return 0
 
-    while resources_sufficient > True:
-        if resources["milk"] - qtd_milk >= 0:
-            resources["milk"] = resources["milk"] - qtd_milk
-        else:
-            print("Sorry there is not enough milk")
-            resources_sufficient = False
+
+def process_coins():
+    total = int(input("how many quarters?: ")) * 0.25
+    total += int(input("how many dimes?: ")) * 0.1
+    total += int(input("how many nickles?: ")) * 0.05
+    total += int(input("how many pennies?: ")) * 0.01
+    return total
 
 
-def new_order(order):
+def new_order(order, money):
     if order.lower() == "espresso":
-        check_resources(order.lower())
+        check_resources(order.lower(), money)
     elif order.lower() == "latte":
-        check_resources(order.lower())
+        check_resources(order.lower(), money)
     elif order.lower() == "cappuccino":
-        check_resources(order.lower())
+        check_resources(order.lower(), money)
     elif order.lower() == "report":
-        report()
+        report(money)
 
 
 def machine():
     money = 0.00
-    order = input("What would you like? (espresso/latte/cappuccino): ")
-    new_order(order)
+    is_on = True
+    while is_on:
+        order = input("What would you like? (espresso/latte/cappuccino): ")
+        if order == "off":
+            is_on = False
+        else:
+            new_order(order, money)
 
-
+# TODO: Falta terminar tudo
 machine()
